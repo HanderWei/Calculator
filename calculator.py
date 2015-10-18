@@ -1,3 +1,6 @@
+__author__ = "ChenWei"
+import sys
+
 # define operator prio dictionary
 prio = { '(' : 5, '^' : 4, '*' : 3, '/' : 3, '+' : 2, '-' : 2,')' : 1, ' ':0}
 
@@ -126,6 +129,9 @@ def calculate(postfix):
                 return
             op1 = pop(stackOperands)
             if item == '^':
+                if op2 == 0 and op1 == 0:
+                    valueError()
+                    return
                 push(stackOperands, op1 ** op2)
             elif item == '*':
                 push(stackOperands, op1 * op2)
@@ -171,11 +177,13 @@ def formatOutput(result):
     if isint(result):
         print (result)
     elif isfloat(result):
-        result = float(result)
-        print("{0:.10f}".format(result))
+        result = "{0:.10f}".format(float(result))
+        print (('%s' % result).rstrip('0').rstrip('.'))
             
 # Main Function
-infix = input()
+inputList = sys.argv
+inputList = inputList[1::]
+infix = ''.join(inputList)
 # get postfix expression
 postfix = infixToPostfix(infix)
 if postfix is None:
